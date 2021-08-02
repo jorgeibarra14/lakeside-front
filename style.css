@@ -1,0 +1,12 @@
+.contenedor {
+    /* height: 92vh; */
+    /* margin: 10%; */
+}
+.boton-guardar {
+    width: 20%;
+    margin-left: 40%;
+    margin-right:auto;
+}
+td{
+    text-transform: uppercase;
+}
