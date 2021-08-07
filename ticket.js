@@ -31,7 +31,7 @@ const date = new Date(r.createdAt);
              <tr>
                 <td>Examen</td>
                 <td class="medio">x1</td>
-                <td class="derecha">$300</td>
+                <td class="derecha">$200</td>
             </tr>`
             );
            }

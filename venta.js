@@ -75,7 +75,7 @@ function setTotal() {
 
     let total = cantidad * precio;
     if(chequeo) {
-        total += 250;
+        total += 200;
     }
     $('#total-a-pagar').val(total);
 
@@ -120,7 +120,7 @@ function vender() {
                 
                 if(chequeo) {
                     
-                        total += 250;
+                        total += 200;
                 }
                 let params = {
                 productoId,userId, cliente, cantidad, monto: total, stock: r.stock, cantidad, precio: r.precio, chequeo
