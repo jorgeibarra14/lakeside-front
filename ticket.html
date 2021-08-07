@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="ticket.css">
+    <title>Document</title>
+</head>
+<body>
+    <div class="ticket">
+        <img
+        src="assets/img/logo1.png"
+        class="img-logo"
+        alt="Logotipo">
+    <p class="centrado">TICKET DE VENTA<br>
+        <span id="fecha"></span></p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Producto</th>
+                    <th>Cant</th>
+                    <th>$$</th>
+                </tr>
+            </thead>
+            <tbody id="tbody">
+                
+                
+            </tbody>
+        </table>
+        <p class="centrado">¡GRACIAS POR SU COMPRA!</p>
+        <p class="centrado">Cajero: <span id="cajero"></span></p>
+    
+        </div>  
+        <button class="oculto-impresion" onclick="window.print();">Imprimir</button>
+        <button class="oculto-impresion" onclick="window.location = 'venta.html'">Regresar</button>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script src="ticket.js"></script>
+</body>
+
+</html>

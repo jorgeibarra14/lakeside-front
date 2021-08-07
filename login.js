@@ -1,4 +1,5 @@
 const API = 'https://lakeside-backend.herokuapp.com/api/';
+// const API = 'http://localhost:8080/api/';
 
 function iniciarSesion (){
     var usuario = $("#login-name").val();
@@ -13,8 +14,25 @@ function iniciarSesion (){
         type:"POST",
         url: API + "auth/signin",
         cache: false,
+        beforeSend: function(e) {
+            let timerInterval
+            Swal.fire({
+            title: 'Cargando',
+            timerProgressBar: true,
+            didOpen: () => {
+                Swal.showLoading()
+            },
+            willClose: () => {
+                clearInterval(timerInterval)
+            }
+            }).then((result) => {
+            
+            })
+
+        },
         success: function(response){
             console.log(response);
+            localStorage.setItem('user', JSON.stringify(response));
             localStorage.setItem('logged', 1);
             window.location.href = "/inventario.html";
             

@@ -10,3 +10,9 @@
 td{
     text-transform: uppercase;
 }
+.logout {
+    color: white;
+}
+.logout:hover {
+    color: blue;
+}

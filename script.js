@@ -1,9 +1,32 @@
 const API = 'https://lakeside-backend.herokuapp.com/api/';
+const SERVER_UPLOADS = 'https://lakeside-backend.herokuapp.com/uploads/';
+
+// const API = 'http://localhost:8080/api/';
+// const SERVER_UPLOADS = 'http://localhost:8080/uploads/';
+
 $(document).ready(function() {
+  
   const isLoggedIn = localStorage.getItem('logged');
-  if(isLoggedIn != 1) {
+
+
+  const user = JSON.parse(localStorage.getItem('user'));
+  if(user.roles[0] != 'ROLE_VENDEDOR') {
+    document.getElementById('inventario').style.display = 'block';
+
+  }
+  if(user != null && user != undefined) {
+    const sesion =  parseJwt(user.accessToken); 
+
+    if (sesion && Date.now() >= sesion.exp * 1000) {
+      window.location.href = '/';
+    }
+} else {
     window.location.href = '/';
-  } 
+}
+if(user.roles[0] == 'ROLE_VENDEDOR') {
+  window.location.href = 'venta.html';
+}
+   $('#username').text(user.username)
     crearTabla();
     // Swal.fire('Any fool can use a computer')
     $("input[data-type='currency']").on({
@@ -89,6 +112,10 @@ $(document).ready(function() {
       input[0].setSelectionRange(caret_pos, caret_pos);
     }
 } );
+
+
+const FROM_PATTERN = 'YYYY-MM-DD HH:mm:ss.SSS';
+const TO_PATTERN   = 'DD/MM/YYYY HH:mm';
 function crearTabla(){
     var data = [];
     var tabla;
@@ -124,7 +151,7 @@ function crearTabla(){
                              { data: 'stock', title: 'Stock',  align: 'center', width: '20%' },
                              { data: 'precio', title: 'Precio',  align: 'center', width: '20%' },
 
-                             { data: 'createdAt', title: 'fecha', tmpl: '<div class="text-truncate" data-toggle="popover" data-placement="bottom" title="{createdAt}">{createdAt}</div>',type: 'date',format: 'mm/dd/yyyy', align:'center', width:'100%' }
+                            //  { data: 'createdAt', title: 'fecha', render: $.fn.dataTable.render.moment(FROM_PATTERN, TO_PATTERN)}
         
                          ],
                  createdRow: function (row, data, dataIndex) {
@@ -193,7 +220,8 @@ function edit(id){
         url: API + "producto/"+id,
         cache: false,
         success: function(response){
-          
+            document.getElementById('imagen').style.display = 'block';
+
             console.log(response);
             $('#id').val(response.id);
             $('#exampleModal').modal('show');
@@ -202,6 +230,8 @@ function edit(id){
             $("#modelo").val(response.modelo);
             $("#stock").val(response.stock);
             $("#currency-field").val(response.precio);
+            $('#img-p').attr("src", SERVER_UPLOADS + response.foto);
+
             // Swal.fire(
             //   'Registro Borrado!',
             //   'Completado',
@@ -225,7 +255,16 @@ function guardar(){
     var precio2 = precio.replace("$","");
     var precio3 = precio2.replace(",","");
     var id = $('#id').val();
-    
+    let photo = document.getElementById("image-file").files[0];
+
+    let formData = new FormData();
+    formData.append('avatar', photo);
+    formData.append('nombre', nombre);
+    formData.append('marca', marca);
+    formData.append('modelo', modelo);
+    formData.append('stock', stock);
+    formData.append('precio', precio3);
+    formData.append('status', status);
     var parametros = {
         "nombre":nombre,
         "marca":marca,
@@ -236,46 +275,72 @@ function guardar(){
     };
     console.log(id);
     if (id == '' ){
+      console.log('entra');
 
-      $.ajax({
-        data: parametros,
-        type:"POST",
-        url: API + "producto/",
-        cache: false,
-        success: function(response){
-            $("#nombre").val("");
+      // $.ajax({
+      //   data: formData,
+      //   type:"POST",
+      //   url: API + "producto/",
+      //   cache: false,
+      //   success: function(response){
+      //     console.log(response);
+      //       $("#nombre").val("");
+      //       $("#marca").val("");
+      //       $("#modelo").val("");
+      //       $("#stock").val("");
+      //       $("#currency-field").val("");
+      //       // alert("El registro fue guardado");
+      //       // $('#example').DataTable().clear().destroy();
+      //       // crearTabla();
+      //       // window.location.reload();
+            
+      //   }
+      // });
+      fetch(API + "producto", {method: "POST", body: formData}).then(r => {
+        console.log(r);
+        $("#nombre").val("");
             $("#marca").val("");
             $("#modelo").val("");
             $("#stock").val("");
             $("#currency-field").val("");
-            alert("El registro fue guardado");
+            // alert("El registro fue guardado");
             $('#example').DataTable().clear().destroy();
             crearTabla();
-            // window.location.reload();
-            
-        }
       });
+
     } else {
-      $.ajax({
-        data: parametros,
-        type:"PUT",
-        url: API + "producto/"+id,
-        cache: false,
-        success: function(response){
-            $("#nombre").val("");
+      // $.ajax({
+      //   data: parametros,
+      //   type:"PUT",
+      //   url: API + "producto/"+id,
+      //   cache: false,
+      //   success: function(response){
+      //       $("#nombre").val("");
+      //       $("#marca").val("");
+      //       $("#modelo").val("");
+      //       $("#stock").val("");
+      //       $("#currency-field").val("");
+      //       // alert("El registro fue exitoso");
+      //       $('#example').DataTable().clear().destroy();
+      //       crearTabla();
+      //       $('#exampleModal').modal('hide');
+      //       // window.location.reload();
+            
+      //   }, error:function(XMLHttpRequest, textStatus, errorThrown) { 
+      //     alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+      // }
+      // });
+      fetch(API + "producto/" + id, {method: "PUT", body: formData}).then(r => {
+        console.log(r);
+        $("#nombre").val("");
             $("#marca").val("");
             $("#modelo").val("");
             $("#stock").val("");
             $("#currency-field").val("");
-            // alert("El registro fue exitoso");
+            // alert("El registro fue guardado");
             $('#example').DataTable().clear().destroy();
+            $('#exampleModal').modal('toggle');
             crearTabla();
-            $('#exampleModal').modal('hide');
-            // window.location.reload();
-            
-        }, error:function(XMLHttpRequest, textStatus, errorThrown) { 
-          alert("Status: " + textStatus); alert("Error: " + errorThrown); 
-      }
       });
     }
     
@@ -289,3 +354,17 @@ function abrirModal(){
             $("#currency-field").val("");
             $('#exampleModal').modal('toggle');
 }
+function logout() {
+  localStorage.clear();
+  window.location = '/';
+}
+
+function parseJwt (token) {
+  var base64Url = token.split('.')[1];
+  var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+  var jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+      return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+  }).join(''));
+
+  return JSON.parse(jsonPayload);
+};
