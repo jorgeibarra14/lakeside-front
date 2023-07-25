@@ -1,7 +1,7 @@
-const API = 'https://lakeside-backend.herokuapp.com/api/';
-const SERVER_UPLOADS = 'https://lakeside-backend.herokuapp.com/uploads/';
-// const API = 'http://localhost:8080/api/';
-// const SERVER_UPLOADS = 'http://localhost:8080/uploads/';
+// const API = 'https://lakeside-backend.herokuapp.com/api/';
+// const SERVER_UPLOADS = 'https://lakeside-backend.herokuapp.com/uploads/';
+const API = 'http://localhost:8080/api/';
+const SERVER_UPLOADS = 'http://localhost:8080/uploads/';
 
 $( function() {
     const isLoggedIn = localStorage.getItem('logged');

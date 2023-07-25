@@ -5,7 +5,6 @@ const API = 'http://localhost:8080/api/';
 const SERVER_UPLOADS = 'http://localhost:8080/uploads/';
 
 $(document).ready(function() {
-  
   const isLoggedIn = localStorage.getItem('logged');
 
 
@@ -244,38 +243,75 @@ function edit(id){
       });
       
     }
- 
-function guardar(){
-    var nombre = $("#nombre").val();
-    var marca = $("#marca").val();
-    var modelo = $("#modelo").val();
-    var stock = $("#stock").val();
-    var precio = $("#currency-field").val();
-    var status = 1;
-    var precio2 = precio.replace("$","");
-    var precio3 = precio2.replace(",","");
-    var id = $('#id').val();
-    let photo = document.getElementById("image-file").files[0];
 
-    let formData = new FormData();
-    formData.append('avatar', photo);
-    formData.append('nombre', nombre);
-    formData.append('marca', marca);
-    formData.append('modelo', modelo);
-    formData.append('stock', stock);
-    formData.append('precio', precio3);
-    formData.append('status', status);
-    var parametros = {
-        "nombre":nombre,
-        "marca":marca,
-        "modelo":modelo,
-        "stock":stock,
-        "precio":precio3,
-        "status":status
-    };
-    console.log(id);
-    if (id == '' ){
-      console.log('entra');
+    $("#surtido_id").on('change', function(val) {
+      debugger
+      if(val == 1 && val == 1) {
+        suma += 1000;
+      }
+      if(val == 1 && val == 2) {
+        suma += 42000;
+      }
+    });
+
+function calcular(){
+  var suma = 0;
+  var costoServicio = 0;
+  var ganancia = 0;
+    var nombre = $("#nombre").val();
+    var lugar = $("#lugar").val();
+    var cuentaArmazon = $("#cuentaArmazon").val();
+    var costo_armazon = $("#costo_armazon").val();
+    var surtido_id = $("#surtido_id").val();
+    var tipolente_id = $("#tipolente_id").val();
+    var bisel_id = $("#bisel_id").val();
+    var costo_servicio = $("#costo_servicio").val();
+    var costo_interno = $("#costo_interno").val();
+    var costo_publico = $("#costo_publico").val();
+    var ganancia = $("#ganancia").val();
+    
+
+    if(surtido_id == 1 && tipolente_id == 1) {
+      suma += 1000;
+    }
+    if(surtido_id == 1 && tipolente_id == 2) {
+      suma += 42000;
+    }
+
+
+    switch(bisel_id) {
+      case "1":
+        costoServicio = 30;
+        $("#costo_servicio").val(costoServicio);
+        break;
+      case "2":
+        costoServicio = 60;
+        $("#costo_servicio").val(costoServicio);
+        break;
+      case "3":
+        costoServicio = 90;
+        $("#costo_servicio").val(costoServicio);
+        break;
+    }
+
+
+    // if(garantia) {
+    //   ganancia = costo_publico - ((suma * 2) + costoServicio);
+    //   $("#costo_interno").val((suma * 2) + costoServicio);
+    // } else {
+      ganancia = costo_publico - (suma + costoServicio);
+      $("#costo_interno").val((suma + costoServicio));
+
+      $("#ganancia").val(ganancia);
+    // }
+
+
+    console.log(ganancia);
+    console.log(costoServicio);
+    console.log(suma);
+
+
+
 
       // $.ajax({
       //   data: formData,
@@ -296,53 +332,54 @@ function guardar(){
             
       //   }
       // });
-      fetch(API + "producto", {method: "POST", body: formData}).then(r => {
-        console.log(r);
-        $("#nombre").val("");
-            $("#marca").val("");
-            $("#modelo").val("");
-            $("#stock").val("");
-            $("#currency-field").val("");
-            // alert("El registro fue guardado");
-            $('#example').DataTable().clear().destroy();
-            crearTabla();
-      });
+    //   fetch(API + "producto", {method: "POST", body: formData}).then(r => {
+    //     console.log(r);
+    //     $("#nombre").val("");
+    //         $("#marca").val("");
+    //         $("#modelo").val("");
+    //         $("#stock").val("");
+    //         $("#currency-field").val("");
+    //         // alert("El registro fue guardado");
+    //         $('#example').DataTable().clear().destroy();
+    //         crearTabla();
+    //   });
 
-    } else {
-      // $.ajax({
-      //   data: parametros,
-      //   type:"PUT",
-      //   url: API + "producto/"+id,
-      //   cache: false,
-      //   success: function(response){
-      //       $("#nombre").val("");
-      //       $("#marca").val("");
-      //       $("#modelo").val("");
-      //       $("#stock").val("");
-      //       $("#currency-field").val("");
-      //       // alert("El registro fue exitoso");
-      //       $('#example').DataTable().clear().destroy();
-      //       crearTabla();
-      //       $('#exampleModal').modal('hide');
-      //       // window.location.reload();
+    // } else {
+    //   // $.ajax({
+    //   //   data: parametros,
+    //   //   type:"PUT",
+    //   //   url: API + "producto/"+id,
+    //   //   cache: false,
+    //   //   success: function(response){
+    //   //       $("#nombre").val("");
+    //   //       $("#marca").val("");
+    //   //       $("#modelo").val("");
+    //   //       $("#stock").val("");
+    //   //       $("#currency-field").val("");
+    //   //       // alert("El registro fue exitoso");
+    //   //       $('#example').DataTable().clear().destroy();
+    //   //       crearTabla();
+    //   //       $('#exampleModal').modal('hide');
+    //   //       // window.location.reload();
             
-      //   }, error:function(XMLHttpRequest, textStatus, errorThrown) { 
-      //     alert("Status: " + textStatus); alert("Error: " + errorThrown); 
-      // }
-      // });
-      fetch(API + "producto/" + id, {method: "PUT", body: formData}).then(r => {
-        console.log(r);
-        $("#nombre").val("");
-            $("#marca").val("");
-            $("#modelo").val("");
-            $("#stock").val("");
-            $("#currency-field").val("");
-            // alert("El registro fue guardado");
-            $('#example').DataTable().clear().destroy();
-            $('#exampleModal').modal('toggle');
-            crearTabla();
-      });
-    }
+    //   //   }, error:function(XMLHttpRequest, textStatus, errorThrown) { 
+    //   //     alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+    //   // }
+    //   // });
+    //   fetch(API + "producto/" + id, {method: "PUT", body: formData}).then(r => {
+    //     console.log(r);
+    //     $("#nombre").val("");
+    //         $("#marca").val("");
+    //         $("#modelo").val("");
+    //         $("#stock").val("");
+    //         $("#currency-field").val("");
+    //         // alert("El registro fue guardado");
+    //         $('#example').DataTable().clear().destroy();
+    //         $('#exampleModal').modal('toggle');
+    //         crearTabla();
+    //   });
+    // }
+    console.log();
     
 }
 function abrirModal(){

@@ -1,5 +1,5 @@
-const API = 'https://lakeside-backend.herokuapp.com/api/';
-// const API = 'http://localhost:8080/api/';
+// const API = 'https://lakeside-backend.herokuapp.com/api/';
+const API = 'http://localhost:8080/api/';
 
 $(document).ready(function() {
     obtenerTicket();

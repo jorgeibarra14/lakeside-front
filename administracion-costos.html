@@ -29,36 +29,70 @@
             <div class="modal-body">
               <div class="form-floating mb-3">
                 <input type="text" class="form-control" id="nombre" placeholder="name@example.com">
-                <label for="floatingInput">Nombre</label>
+                <label for="floatingInput">Nombre / Folio</label>
               </div>
               <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="marca" placeholder="name@example.com">
-                <label for="floatingInput">Marca</label>
+                <select name="" id="lugar" class="form-select">
+                  <option value="Ajijic">Ajijic</option>
+                  <option value="Jocotepec">Jocotepec</option>
+                </select>
+                <label for="floatingInput">Lugar</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="cuentaArmazon">
+                <label class="form-check-label" for="flexCheckDefault">
+                  ¿Cuenta con armazón?
+                </label>
               </div>
               <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="modelo" placeholder="name@example.com">
-                <label for="floatingInput">Modelo</label>
+                <input type="number" class="form-control" id="costo_armazon" placeholder="0.0">
+                <label for="floatingInput">Costo armazón</label>
               </div>
               <div class="form-floating mb-3">
-                <input type="number" class="form-control" min="0" id="stock" placeholder="name@example.com">
-                <label for="floatingInput">Stock</label>
+                <select name="" id="surtido_id" class="form-select">
+                  <!-- TODO PONER AJAX CON SURTIDOS -->
+                  <option value="1">Terminado</option>
+                  <option value="2">Tallado</option>
+                </select>
+                <label for="floatingInput">Surtido</label>
               </div>
               <div class="form-floating mb-3">
-                <input type="text" class="form-control" name="currency-field" id="currency-field" pattern="^\$\d{1,3}(,\d{3})*(\.\d+)?$" value="" data-type="currency" placeholder="$1,000,000.00">
-                <label for="floatingInput">Precio</label>
+                <select name="" id="tipolente_id" class="form-select">
+                  <option value="1">Mono-CrW</option>
+                  <option value="2">Prog-Cr-Foto-Ar</option>
+                  <!-- TODO PONER AJAX CON SURTIDOS -->
+                </select>
+                <label for="floatingInput">Tipo de lente</label>
               </div>
-              <div id="imagen" style="display: none;">
-                <img id="img-p" style="width: 100%" src="" alt="">
+              <div class="form-floating mb-3">
+                <select name="" id="bisel_id" class="form-select">
+                  <!-- TODO PONER AJAX CON SURTIDOS -->
+                  <option value="1">Completo</option>
+                  <option value="2">Ranurado</option>
+                  <option value="3">Perforado</option>
+                </select>
+                <label for="floatingInput">Bisel</label>
               </div>
-              <div class="input-group mb-3">
-                <div class="custom-file">
-                  <input type="file" id="image-file" class="custom-file-input">
-                </div>
+              <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="costo_servicio" placeholder="0.0" disabled>
+                <label for="floatingInput">Costo Servicio</label>
+              </div>
+              <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="costo_interno" placeholder="0.0" disabled>
+                <label for="floatingInput">Costo Interno</label>
+              </div>
+              <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="costo_publico" placeholder="0.0">
+                <label for="floatingInput">Costo Público</label>
+              </div>
+              <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="ganancia" placeholder="0.0" disabled>
+                <label for="floatingInput">Ganancia</label>
               </div>
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-primary" onclick="guardar()">Guardar</button>
+                <button type="button" class="btn btn-primary" onclick="calcular()">Guardar</button>
             </div>
           </div>
           </div>
@@ -72,15 +106,14 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
               <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                  <a class="nav-link active" aria-current="page" id="inventario" style="display: none" href="/inventario.html">Inventario</a>
+                  <a class="nav-link" aria-current="page" id="inventario" style="display: none" href="/inventario.html">Inventario</a>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link" href="/venta.html">Venta</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="/administracion-costos.html">Administración</a>
+                  <a class="nav-link active" href="/administracion-costos.html">Administración</a>
                 </li>
-            
               </ul>
               <div class="d-flex">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
@@ -96,12 +129,18 @@
             <thead>
                 <tr>
                     <th>Id</th>
-                    <th>Nombre</th>
-                    <th>Marca</th>
-                    <th>Modelo</th>
-                    <th>Precio</th>
-                    <th>Stock</th>
-                    <th>Status</th>
+                    <th>Nombre / Folio</th>
+                    <th>Lugar</th>
+                    <th>Cuenta con Armazón?</th>
+                    <th>Coste armazón</th>
+                    <th>Surtido</th>
+                    <th>Tipo de lente</th>
+                    <th>Bisel</th>
+                    <th>Costo Servicio</th>
+                    <th>Costo Interno</th>
+                    <th>Costo Público</th>
+                    <th>Garantia</th>
+                    <th>Ganancia</th>
                 </tr>
             </thead>
             <tbody id="datos">
@@ -120,7 +159,7 @@
             </tfoot> -->
         </table>
         <button type="button" class="btn btn-primary boton-guardar" onclick='abrirModal()'>
-          Agregar Producto
+          Agregar registro
         </button>
 </div>
 
@@ -133,7 +172,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.26.0/moment.min.js"></script>
     <script src="https://cdn.datatables.net/plug-ins/1.10.21/dataRender/datetime.js"></script>
     <!-- Option 2: Separate Popper and Bootstrap JS -->
-    <script type="text/javascript" src="script.js"></script>
+    <script type="text/javascript" src="costos.js"></script>
     <script type="text/javascript">
     // $(document).ready(function() {
     //     // $('#example').DataTable();
